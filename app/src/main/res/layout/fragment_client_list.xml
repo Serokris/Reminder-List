@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cardview_dark_background"
+        tools:context=".ui.clientlist.ClientListFragment">
+
+        <ImageView
+            android:id="@+id/noInternetImage"
+            android:layout_width="300dp"
+            android:layout_height="350dp"
+            android:visibility="invisible"
+            android:src="@drawable/ic_no_internet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/clientRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/clientRecyclerView"
+            app:layout_constraintTop_toTopOf="@+id/clientRecyclerView"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/clientRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:padding="4dp"
+            android:clipToPadding="false"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
