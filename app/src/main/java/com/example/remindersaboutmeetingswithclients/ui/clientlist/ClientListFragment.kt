@@ -16,8 +16,11 @@ import com.example.remindersaboutmeetingswithclients.viewmodel.ReminderViewModel
 import kotlinx.coroutines.launch
 import android.net.ConnectivityManager
 import android.os.Build
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
+
     private val viewModel: ReminderViewModel by viewModels()
     private lateinit var navController: NavController
 

@@ -7,12 +7,13 @@ One hour before the appointment time with a specific client you receive a notifi
 
 ## __Screenshots__
 
-![](screenshots/2021-08-23%2019.27.05.jpg)
-![](screenshots/2021-08-23%2019.27.08.jpg)
-![](screenshots/2021-08-23%2019.27.11.jpg)
-![](screenshots/2021-08-23%2019.27.14.jpg)
-![](screenshots/2021-08-23%2019.27.17.jpg)
-![](screenshots/2021-08-23%2019.27.19.jpg)
+![](screenshots/2021-08-25%2016.08.53.jpg)
+![](screenshots/2021-08-25%2016.08.58.jpg)
+![](screenshots/2021-08-25%2016.09.00.jpg)
+![](screenshots/2021-08-25%2016.09.03.jpg)
+![](screenshots/2021-08-25%2016.09.07.jpg)
+![](screenshots/2021-08-25%2016.09.09.jpg)
+![](screenshots/2021-08-25%2016.09.11.jpg)
 
 ## __The main technologies used to create this application__
 
@@ -24,3 +25,4 @@ One hour before the appointment time with a specific client you receive a notifi
 * [Gson](https://github.com/google/gson)
 * [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines)
 * [Data binding](https://developer.android.com/topic/libraries/data-binding)
+* [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)

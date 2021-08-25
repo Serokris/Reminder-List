@@ -15,8 +15,11 @@ import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminde
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.example.remindersaboutmeetingswithclients.viewmodel.ReminderViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReminderListFragment : Fragment() {
+
     private val viewModel: ReminderViewModel by viewModels()
 
     override fun onCreateView(
@@ -31,6 +34,7 @@ class ReminderListFragment : Fragment() {
             adapter.submitList(list)
             binding.reminderImage.visibility = if (list.isEmpty()) View.VISIBLE else View.INVISIBLE
         })
+
 
         binding.apply {
             reminderRecyclerView.adapter = adapter

@@ -14,17 +14,19 @@ import android.app.DatePickerDialog
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import com.example.remindersaboutmeetingswithclients.data.db.entity.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
 import com.example.remindersaboutmeetingswithclients.viewmodel.ReminderViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class CreateReminderFragment : Fragment() {
+
     private val viewModel: ReminderViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.N)
