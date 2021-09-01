@@ -8,13 +8,16 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.remindersaboutmeetingswithclients.R
-import com.example.remindersaboutmeetingswithclients.ui.MainActivity
+import com.example.remindersaboutmeetingswithclients.presentation.MainActivity
 
 class ReminderNotification {
     companion object {
         private lateinit var notificationManager: NotificationManager
         private const val CHANNEL_ID = "channelID"
         private const val CHANNEL_NAME = "NotificationChannel"
+
+        var currentNotificationId: Int? = null
+            private set
 
         fun createNotification(context: Context) {
             notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
@@ -36,6 +39,7 @@ class ReminderNotification {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
 
             val uniqueNotificationId = System.currentTimeMillis().toInt()
+            currentNotificationId = uniqueNotificationId
 
             createChannelIfNeeded(notificationManager)
             notificationManager.notify(uniqueNotificationId, notificationBuilder.build())

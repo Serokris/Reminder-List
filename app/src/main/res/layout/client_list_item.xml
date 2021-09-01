@@ -31,7 +31,8 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/clientImage"/>
+                app:layout_constraintStart_toEndOf="@+id/clientImage"
+                tools:ignore="MissingConstraints" />
 
             <View
                 android:layout_width="match_parent"

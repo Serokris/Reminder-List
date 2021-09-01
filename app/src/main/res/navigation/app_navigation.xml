@@ -8,25 +8,25 @@
 
     <fragment
         android:id="@+id/reminderListFragment"
-        android:name="com.example.remindersaboutmeetingswithclients.ui.reminderlist.ReminderListFragment"
+        android:name="com.example.remindersaboutmeetingswithclients.presentation.reminderlist.ReminderListFragment"
         android:label="Reminder list" >
     </fragment>
 
     <fragment
         android:id="@+id/createReminderFragment"
-        android:name="com.example.remindersaboutmeetingswithclients.ui.createreminder.CreateReminderFragment"
+        android:name="com.example.remindersaboutmeetingswithclients.presentation.createreminder.CreateReminderFragment"
         android:label="Creating reminder"
         tools:layout="@layout/fragment_create_reminder" >
         <argument
             android:name="client"
-            app:argType="com.example.remindersaboutmeetingswithclients.data.db.entity.Client"
+            app:argType="com.example.remindersaboutmeetingswithclients.domain.models.Client"
             app:nullable="true"
             android:defaultValue="@null"/>
     </fragment>
 
     <fragment
         android:id="@+id/clientListFragment"
-        android:name="com.example.remindersaboutmeetingswithclients.ui.clientlist.ClientListFragment"
+        android:name="com.example.remindersaboutmeetingswithclients.presentation.clientlist.ClientListFragment"
         android:label="Client list"
         tools:layout="@layout/fragment_client_list" >
         <action
