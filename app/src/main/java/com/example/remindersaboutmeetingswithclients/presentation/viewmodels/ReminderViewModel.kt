@@ -8,7 +8,9 @@ import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.domain.models.response.ClientResponse
 import com.example.remindersaboutmeetingswithclients.domain.usecases.ReminderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -17,15 +19,15 @@ class ReminderViewModel @Inject constructor(
     private val reminderUseCase: ReminderUseCase
 ) : ViewModel() {
     fun insert(reminderItem: ReminderItem) {
-        viewModelScope.launch { reminderUseCase.insert(reminderItem) }
+        viewModelScope.launch(Dispatchers.IO) { reminderUseCase.insert(reminderItem) }
     }
 
     fun delete(reminderItem: ReminderItem) {
-        viewModelScope.launch { reminderUseCase.delete(reminderItem) }
+        viewModelScope.launch(Dispatchers.IO) { reminderUseCase.delete(reminderItem) }
     }
 
     fun deleteAllReminders() {
-        viewModelScope.launch { reminderUseCase.deleteAllReminder() }
+        viewModelScope.launch(Dispatchers.IO) { reminderUseCase.deleteAllReminder() }
     }
 
     fun getAllReminders() : LiveData<List<ReminderItem>> {
@@ -33,6 +35,6 @@ class ReminderViewModel @Inject constructor(
     }
 
     suspend fun getRandomUsers(count: Int) : Response<ClientResponse> {
-        return reminderUseCase.getRandomUsers(count)
+        return withContext(Dispatchers.IO) { reminderUseCase.getRandomUsers(count) }
     }
 }
