@@ -100,7 +100,7 @@ class ReminderListFragment : Fragment() {
 
     private fun deleteReminder(reminder: ReminderItem) {
         viewModel.delete(reminder)
-        Snackbar.make(requireView(), "Reminder deleted", Snackbar.LENGTH_LONG).apply {
+        val snackBar = Snackbar.make(requireView(), "Reminder deleted", Snackbar.LENGTH_LONG).apply {
             setAction("Undo") {
                 viewModel.insert(reminder)
             }

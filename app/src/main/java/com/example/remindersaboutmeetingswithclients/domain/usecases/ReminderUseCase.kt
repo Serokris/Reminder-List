@@ -4,6 +4,7 @@ import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.domain.models.response.ClientResponse
 import com.example.remindersaboutmeetingswithclients.domain.repository.ReminderRepository
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import javax.inject.Inject
 
 class ReminderUseCase @Inject constructor(private val reminderRepository: ReminderRepository) {
@@ -13,7 +14,7 @@ class ReminderUseCase @Inject constructor(private val reminderRepository: Remind
 
     suspend fun deleteAllReminder() = reminderRepository.deleteAllReminder()
 
-    suspend fun getRandomUsers(count: Int): ClientResponse = reminderRepository.getRandomUsers(count)
+    suspend fun getRandomUsers(count: Int): Response<ClientResponse> = reminderRepository.getRandomUsers(count)
 
     fun getAllReminders(): Flow<List<ReminderItem>> = reminderRepository.getAllReminders()
 }

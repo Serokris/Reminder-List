@@ -16,6 +16,8 @@ import com.example.remindersaboutmeetingswithclients.presentation.viewmodels.Rem
 import kotlinx.coroutines.launch
 import android.net.ConnectivityManager
 import android.os.Build
+import android.widget.Toast
+import com.example.remindersaboutmeetingswithclients.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,8 +39,13 @@ class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
 
         viewModel.viewModelScope.launch {
             if (isInternetConnected()) {
-                val clientList = viewModel.getRandomUsers(15).clients
-                adapter.submitList(clientList)
+                val clientList = viewModel.getRandomUsers(15).body()
+                if (clientList != null) {
+                    adapter.submitList(clientList.clients)
+                } else {
+                    Toast.makeText(requireContext(), R.string.failed_to_get_client_list,
+                        Toast.LENGTH_SHORT).show()
+                }
             } else {
                 binding.noInternetImage.visibility = View.VISIBLE
             }

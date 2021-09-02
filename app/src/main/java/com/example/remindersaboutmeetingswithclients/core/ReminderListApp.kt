@@ -1,4 +1,4 @@
-package com.example.remindersaboutmeetingswithclients
+package com.example.remindersaboutmeetingswithclients.core
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -16,4 +16,5 @@
         notification</string>
     <string name="not_valid_date_or_time">The date and/or time are not valid</string>
     <string name="confirm_action">Confirm action</string>
+    <string name="failed_to_get_client_list">Failed to get client list</string>
 </resources>

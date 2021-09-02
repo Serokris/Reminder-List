@@ -9,6 +9,7 @@ import com.example.remindersaboutmeetingswithclients.domain.models.response.Clie
 import com.example.remindersaboutmeetingswithclients.domain.usecases.ReminderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +32,7 @@ class ReminderViewModel @Inject constructor(
         return reminderUseCase.getAllReminders().asLiveData()
     }
 
-    suspend fun getRandomUsers(count: Int) : ClientResponse {
+    suspend fun getRandomUsers(count: Int) : Response<ClientResponse> {
         return reminderUseCase.getRandomUsers(count)
     }
 }

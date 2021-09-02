@@ -6,6 +6,7 @@ import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.domain.models.response.ClientResponse
 import com.example.remindersaboutmeetingswithclients.domain.repository.ReminderRepository
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import javax.inject.Inject
 
 class ReminderRepositoryImpl @Inject constructor(
@@ -24,7 +25,7 @@ class ReminderRepositoryImpl @Inject constructor(
         reminderDao.deleteAllReminders()
     }
 
-    override suspend fun getRandomUsers(count: Int) : ClientResponse {
+    override suspend fun getRandomUsers(count: Int) : Response<ClientResponse> {
         return apiService.getRandomUsers(count)
     }
 
