@@ -14,6 +14,7 @@ import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminde
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.example.remindersaboutmeetingswithclients.presentation.viewmodels.ReminderViewModel
+import com.example.remindersaboutmeetingswithclients.utils.sharedpreferences.CreateReminderFragmentSharedPreferences
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,8 +28,13 @@ class ReminderListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentReminderListBinding.inflate(inflater)
+
+        CreateReminderFragmentSharedPreferences.clearSharedPreferences(requireActivity())
+
         val navController = findNavController()
         val adapter = ReminderListAdapter(requireContext())
+
+        requireActivity().actionBar
 
         viewModel.getAllReminders().observe(viewLifecycleOwner, { list ->
             adapter.submitList(list)
@@ -82,7 +88,8 @@ class ReminderListFragment : Fragment() {
         viewModel.getAllReminders().observeOnce { list ->
             if (list.isEmpty()) {
                 Toast.makeText(requireContext(), R.string.you_have_no_reminders,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 AlertDialog.Builder(requireContext())
                     .setTitle(R.string.confirm_action)
@@ -100,7 +107,7 @@ class ReminderListFragment : Fragment() {
 
     private fun deleteReminder(reminder: ReminderItem) {
         viewModel.delete(reminder)
-        val snackBar = Snackbar.make(requireView(), "Reminder deleted", Snackbar.LENGTH_LONG).apply {
+        Snackbar.make(requireView(), "Reminder deleted", Snackbar.LENGTH_LONG).apply {
             setAction("Undo") {
                 viewModel.insert(reminder)
             }

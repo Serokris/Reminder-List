@@ -2,8 +2,8 @@ package com.example.remindersaboutmeetingswithclients.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.remindersaboutmeetingswithclients.data.source.local.REMINDER_LIST_DB_NAME
 import com.example.remindersaboutmeetingswithclients.data.source.local.ReminderDatabase
-import com.example.remindersaboutmeetingswithclients.utils.Constants.DB_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ class DatabaseModule {
     fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
         context.applicationContext,
         ReminderDatabase::class.java,
-        DB_NAME
+        REMINDER_LIST_DB_NAME
     ).build()
 
     @Singleton

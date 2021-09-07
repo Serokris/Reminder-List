@@ -1,7 +1,7 @@
 package com.example.remindersaboutmeetingswithclients.di
 
+import com.example.remindersaboutmeetingswithclients.data.source.remote.RANDOM_USER_SERVICE_BASE_URL
 import com.example.remindersaboutmeetingswithclients.data.source.remote.RandomUserApiService
-import com.example.remindersaboutmeetingswithclients.utils.Constants.BASE_URL
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ class NetworkModule {
     @Provides
     fun provideRandomUserApiService(): RandomUserApiService {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(RANDOM_USER_SERVICE_BASE_URL)
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

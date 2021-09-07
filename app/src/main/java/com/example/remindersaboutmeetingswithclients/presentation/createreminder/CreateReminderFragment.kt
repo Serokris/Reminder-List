@@ -11,9 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentCreateReminderBinding
 import android.app.DatePickerDialog
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
@@ -23,24 +21,32 @@ import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
+import android.content.Context.MODE_PRIVATE
+import com.example.remindersaboutmeetingswithclients.utils.sharedpreferences.*
 
 @AndroidEntryPoint
 class CreateReminderFragment : Fragment() {
 
     private val viewModel: ReminderViewModel by viewModels()
+    private lateinit var binding: FragmentCreateReminderBinding
+    private lateinit var calendar: Calendar
 
-    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentCreateReminderBinding.inflate(inflater)
+        binding = FragmentCreateReminderBinding.inflate(inflater)
+        calendar = Calendar.getInstance()
+
+        loadStateFragmentData()
+
         val navController = findNavController()
         val client = CreateReminderFragmentArgs.fromBundle(requireArguments()).client
 
         binding.apply {
             selectClientButton.setOnClickListener {
+                saveStateFragmentData()
                 navController.navigate(R.id.clientListFragment)
             }
 
@@ -50,8 +56,6 @@ class CreateReminderFragment : Fragment() {
                     "${client.fullName.firstName} ${client.fullName.lastName}"
                 emailSelectedClient.text = client.email
             }
-
-            val calendar = Calendar.getInstance()
 
             setDateSwitch.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
@@ -96,8 +100,7 @@ class CreateReminderFragment : Fragment() {
             }
 
             createReminderButton.setOnClickListener {
-                if (titleEditText.text.isNotEmpty() && fullNameSelectedClient.text.isNotEmpty()
-                    && selectedDateText.text.isNotEmpty()) {
+                if (requiredFieldsIsFilled()) {
                     if (dayOrTimeIsValid(calendar)) {
                         val reminder = ReminderItem(
                             0,
@@ -120,10 +123,56 @@ class CreateReminderFragment : Fragment() {
                         Toast.LENGTH_LONG).show()
             }
         }
+
         return binding.root
+    }
+
+    private fun requiredFieldsIsFilled(): Boolean {
+        binding.apply {
+            val titleEdtIsNotEmpty = titleEditText.text.isNotEmpty()
+            val fullNameClientIsNotEmpty = fullNameSelectedClient.text.isNotEmpty()
+            val selectedDateTextIsNotEmpty = selectedDateText.text.isNotEmpty()
+
+            return titleEdtIsNotEmpty && fullNameClientIsNotEmpty && selectedDateTextIsNotEmpty
+        }
     }
 
     private fun dayOrTimeIsValid(calendar: Calendar): Boolean {
         return !calendar.before(Calendar.getInstance())
+    }
+
+    private fun saveStateFragmentData() {
+        val sharedPreferences = requireActivity().getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        binding.apply {
+            editor.putString(SAVED_TITLE_TEXT, this.titleEditText.text.toString())
+            editor.putString(SAVED_SELECTED_DATE_TEXT, this.selectedDateText.text.toString())
+            editor.putString(SAVED_SELECTED_TIME_TEXT, this.selectedTimeText.text.toString())
+            editor.putBoolean(SAVED_STATE_OF_DATE_SWITCH, this.setDateSwitch.isChecked)
+            editor.putBoolean(SAVED_STATE_OF_TIME_SWITCH, this.setTimeSwitch.isChecked)
+            editor.putLong(SAVED_CALENDAR_TIME, calendar.timeInMillis)
+        }
+        editor.apply()
+    }
+
+    private fun loadStateFragmentData() {
+        val sharedPreferences = requireActivity().getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
+
+        val savedTitleEdt = sharedPreferences.getString(SAVED_TITLE_TEXT, "")
+        val savedSelectedDateText = sharedPreferences.getString(SAVED_SELECTED_DATE_TEXT, "")
+        val savedSelectedTimeText = sharedPreferences.getString(SAVED_SELECTED_TIME_TEXT, "")
+        val savedDataSwitch = sharedPreferences.getBoolean(SAVED_STATE_OF_DATE_SWITCH, false)
+        val savedTimeSwitch = sharedPreferences.getBoolean(SAVED_STATE_OF_TIME_SWITCH, false)
+        val savedCalendarTime = sharedPreferences.getLong(SAVED_CALENDAR_TIME, calendar.timeInMillis)
+
+        binding.apply {
+            titleEditText.setText(savedTitleEdt)
+            selectedDateText.text = savedSelectedDateText
+            selectedTimeText.text = savedSelectedTimeText
+            setDateSwitch.isChecked = savedDataSwitch
+            setTimeSwitch.isChecked = savedTimeSwitch
+        }
+        calendar.timeInMillis = savedCalendarTime
     }
 }

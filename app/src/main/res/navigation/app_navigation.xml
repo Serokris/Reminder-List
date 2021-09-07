@@ -9,14 +9,14 @@
     <fragment
         android:id="@+id/reminderListFragment"
         android:name="com.example.remindersaboutmeetingswithclients.presentation.reminderlist.ReminderListFragment"
-        android:label="Reminder list" >
+        android:label="Reminder list">
     </fragment>
 
     <fragment
         android:id="@+id/createReminderFragment"
         android:name="com.example.remindersaboutmeetingswithclients.presentation.createreminder.CreateReminderFragment"
         android:label="Creating reminder"
-        tools:layout="@layout/fragment_create_reminder" >
+        tools:layout="@layout/fragment_create_reminder">
         <argument
             android:name="client"
             app:argType="com.example.remindersaboutmeetingswithclients.domain.models.Client"
@@ -28,9 +28,11 @@
         android:id="@+id/clientListFragment"
         android:name="com.example.remindersaboutmeetingswithclients.presentation.clientlist.ClientListFragment"
         android:label="Client list"
-        tools:layout="@layout/fragment_client_list" >
+        tools:layout="@layout/fragment_client_list">
         <action
             android:id="@+id/action_clientListFragment_to_createReminderFragment"
-            app:destination="@id/createReminderFragment" />
+            app:destination="@id/createReminderFragment"
+            app:popUpTo="@+id/createReminderFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
