@@ -1,4 +1,4 @@
-package com.example.remindersaboutmeetingswithclients.presentation.createreminder
+package com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,18 +11,25 @@ import com.bumptech.glide.Glide
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentCreateReminderBinding
 import android.app.DatePickerDialog
+import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
-import com.example.remindersaboutmeetingswithclients.presentation.viewmodels.ReminderViewModel
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.ReminderViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
 import android.content.Context.MODE_PRIVATE
-import com.example.remindersaboutmeetingswithclients.utils.sharedpreferences.*
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CREATE_REMINDER_FRAGMENT_PREF_NAME
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_CALENDAR_TIME
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_SELECTED_DATE_TEXT
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_SELECTED_TIME_TEXT
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_DATE_SWITCH
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_TIME_SWITCH
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_TITLE_TEXT
 
 @AndroidEntryPoint
 class CreateReminderFragment : Fragment() {
@@ -39,14 +46,14 @@ class CreateReminderFragment : Fragment() {
         binding = FragmentCreateReminderBinding.inflate(inflater)
         calendar = Calendar.getInstance()
 
-        loadStateFragmentData()
+        loadStateFragmentDataInPreference(requireContext())
 
         val navController = findNavController()
         val client = CreateReminderFragmentArgs.fromBundle(requireArguments()).client
 
         binding.apply {
             selectClientButton.setOnClickListener {
-                saveStateFragmentData()
+                saveStateFragmentDataInPreference(requireContext())
                 navController.navigate(R.id.clientListFragment)
             }
 
@@ -73,7 +80,7 @@ class CreateReminderFragment : Fragment() {
 
                     datePickedDialog.setOnCancelListener { setDateSwitch.isChecked = false }
                     datePickedDialog.show()
-                } else selectedDateText.text = String()
+                } else selectedDateText.text = ""
             }
 
             setTimeSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -96,7 +103,7 @@ class CreateReminderFragment : Fragment() {
                     }
                     timePicker.addOnNegativeButtonClickListener { setTimeSwitch.isChecked = false }
                     timePicker.show(childFragmentManager, "time-picker")
-                } else selectedTimeText.text = String()
+                } else selectedTimeText.text = ""
             }
 
             createReminderButton.setOnClickListener {
@@ -109,18 +116,26 @@ class CreateReminderFragment : Fragment() {
                             selectedTimeText.text.toString(),
                             client!!
                         )
-                        viewModel.insert(reminder)
 
                         if (selectedTimeText.text.isNotEmpty()) {
                             ReminderAlarmManager.createAlarm(requireActivity(), calendar)
-                            Toast.makeText(requireContext(), R.string.you_will_receive_notification,
-                                Toast.LENGTH_LONG).show()
+                            reminder.requestCode = ReminderAlarmManager.getCurrentRequestCode
+
+                            Toast.makeText(
+                                requireContext(), R.string.you_will_receive_notification,
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
+
+                        viewModel.insert(reminder)
                         navController.navigate(R.id.reminderListFragment)
-                    } else Toast.makeText(requireContext(), R.string.not_valid_date_or_time,
-                        Toast.LENGTH_LONG).show()
-                } else Toast.makeText(requireContext(), R.string.fill_in_all_required_fields,
-                        Toast.LENGTH_LONG).show()
+                    } else Toast.makeText(
+                        requireContext(), R.string.not_valid_date_or_time, Toast.LENGTH_LONG
+                    ).show()
+                } else Toast.makeText(
+                    requireContext(), R.string.fill_in_all_required_fields,
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -141,8 +156,9 @@ class CreateReminderFragment : Fragment() {
         return !calendar.before(Calendar.getInstance())
     }
 
-    private fun saveStateFragmentData() {
-        val sharedPreferences = requireActivity().getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
+    private fun saveStateFragmentDataInPreference(context: Context) {
+        val sharedPreferences =
+            context.getSharedPreferences(CREATE_REMINDER_FRAGMENT_PREF_NAME, MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         binding.apply {
@@ -156,15 +172,17 @@ class CreateReminderFragment : Fragment() {
         editor.apply()
     }
 
-    private fun loadStateFragmentData() {
-        val sharedPreferences = requireActivity().getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
+    private fun loadStateFragmentDataInPreference(context: Context) {
+        val sharedPreferences =
+            context.getSharedPreferences(CREATE_REMINDER_FRAGMENT_PREF_NAME, MODE_PRIVATE)
 
         val savedTitleEdt = sharedPreferences.getString(SAVED_TITLE_TEXT, "")
         val savedSelectedDateText = sharedPreferences.getString(SAVED_SELECTED_DATE_TEXT, "")
         val savedSelectedTimeText = sharedPreferences.getString(SAVED_SELECTED_TIME_TEXT, "")
         val savedDataSwitch = sharedPreferences.getBoolean(SAVED_STATE_OF_DATE_SWITCH, false)
         val savedTimeSwitch = sharedPreferences.getBoolean(SAVED_STATE_OF_TIME_SWITCH, false)
-        val savedCalendarTime = sharedPreferences.getLong(SAVED_CALENDAR_TIME, calendar.timeInMillis)
+        val savedCalendarTime =
+            sharedPreferences.getLong(SAVED_CALENDAR_TIME, calendar.timeInMillis)
 
         binding.apply {
             titleEditText.setText(savedTitleEdt)

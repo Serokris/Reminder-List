@@ -11,4 +11,5 @@ data class ReminderItem(
     val date: String,
     val time: String,
     @Embedded val client: Client,
+    var requestCode: Int = 0
 )

@@ -1,6 +1,7 @@
-package com.example.remindersaboutmeetingswithclients.presentation.reminderlist
+package com.example.remindersaboutmeetingswithclients.presentation.reminder.reminderlist
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -13,8 +14,11 @@ import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminderListBinding
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
-import com.example.remindersaboutmeetingswithclients.presentation.viewmodels.ReminderViewModel
-import com.example.remindersaboutmeetingswithclients.utils.sharedpreferences.CreateReminderFragmentSharedPreferences
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.ReminderViewModel
+import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
+import com.example.remindersaboutmeetingswithclients.utils.SharedPreferenceUtils
+import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CREATE_REMINDER_FRAGMENT_PREF_NAME
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,16 +33,18 @@ class ReminderListFragment : Fragment() {
     ): View {
         val binding = FragmentReminderListBinding.inflate(inflater)
 
-        CreateReminderFragmentSharedPreferences.clearSharedPreferences(requireActivity())
+        SharedPreferenceUtils.clearSharedPreferenceIfPreferenceIsSet(
+            requireContext(),
+            CREATE_REMINDER_FRAGMENT_PREF_NAME
+        )
 
         val navController = findNavController()
         val adapter = ReminderListAdapter(requireContext())
 
-        requireActivity().actionBar
-
         viewModel.getAllReminders().observe(viewLifecycleOwner, { list ->
             adapter.submitList(list)
-            binding.reminderImage.visibility = if (list.isEmpty()) View.VISIBLE else View.INVISIBLE
+            binding.reminderImage.visibility =
+                if (list.isEmpty()) View.VISIBLE else View.INVISIBLE
         })
 
         binding.apply {
@@ -64,7 +70,7 @@ class ReminderListFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val reminder = adapter.currentList[position]
-                deleteReminder(reminder)
+                deleteReminderAndCancelAlarm(reminder)
             }
         }).attachToRecyclerView(binding.reminderRecyclerView)
 
@@ -79,23 +85,25 @@ class ReminderListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.deleteAllRemindersAction -> deleteAllReminders()
+            R.id.deleteAllRemindersAction -> deleteAllRemindersAndCancelAllAlarms(requireContext())
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun deleteAllReminders() {
+    private fun deleteAllRemindersAndCancelAllAlarms(context: Context) {
         viewModel.getAllReminders().observeOnce { list ->
             if (list.isEmpty()) {
-                Toast.makeText(requireContext(), R.string.you_have_no_reminders,
+                Toast.makeText(
+                    requireContext(), R.string.you_have_no_reminders,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                AlertDialog.Builder(requireContext())
+                AlertDialog.Builder(context)
                     .setTitle(R.string.confirm_action)
                     .setMessage("Delete all reminders?")
                     .setPositiveButton("Confirm") { dialog, _ ->
                         viewModel.deleteAllReminders()
+                        ReminderAlarmManager.cancelAllAlarms(context)
                         dialog.dismiss()
                     }
                     .setNegativeButton("Cancel") { dialog, _ ->
@@ -105,13 +113,24 @@ class ReminderListFragment : Fragment() {
         }
     }
 
-    private fun deleteReminder(reminder: ReminderItem) {
+    private fun deleteReminderAndCancelAlarm(reminder: ReminderItem) {
         viewModel.delete(reminder)
+
         Snackbar.make(requireView(), "Reminder deleted", Snackbar.LENGTH_LONG).apply {
             setAction("Undo") {
                 viewModel.insert(reminder)
             }
-            show()
-        }
+        }.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+            override fun onShown(transientBottomBar: Snackbar?) {
+                super.onShown(transientBottomBar)
+            }
+
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                super.onDismissed(transientBottomBar, event)
+                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                    ReminderAlarmManager.cancelAlarm(requireContext(), reminder.requestCode)
+                }
+            }
+        }).show()
     }
 }

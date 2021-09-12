@@ -2,8 +2,8 @@ package com.example.remindersaboutmeetingswithclients.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.remindersaboutmeetingswithclients.data.source.local.REMINDER_LIST_DB_NAME
 import com.example.remindersaboutmeetingswithclients.data.source.local.ReminderDatabase
+import com.example.remindersaboutmeetingswithclients.utils.constants.DatabaseConstants.REMINDER_LIST_DB_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +20,7 @@ class DatabaseModule {
         context.applicationContext,
         ReminderDatabase::class.java,
         REMINDER_LIST_DB_NAME
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 
     @Singleton
     @Provides

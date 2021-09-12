@@ -1,4 +1,4 @@
-package com.example.remindersaboutmeetingswithclients.presentation.reminderlist
+package com.example.remindersaboutmeetingswithclients.presentation.reminder.reminderlist
 
 import android.annotation.SuppressLint
 import android.content.Context

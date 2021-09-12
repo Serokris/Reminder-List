@@ -7,23 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.remindersaboutmeetingswithclients.domain.models.Client
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentClientListBinding
-import com.example.remindersaboutmeetingswithclients.presentation.viewmodels.ReminderViewModel
-import kotlinx.coroutines.launch
 import android.net.ConnectivityManager
 import android.os.Build
 import android.widget.Toast
+import androidx.lifecycle.viewModelScope
 import com.example.remindersaboutmeetingswithclients.R
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
 
-    private val viewModel: ReminderViewModel by viewModels()
+    private val viewModel: ClientListViewModel by viewModels()
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -37,18 +36,19 @@ class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
 
         binding.clientRecyclerView.adapter = adapter
 
-        viewModel.viewModelScope.launch {
-            if (isInternetConnected()) {
-                val clientList = viewModel.getRandomUsers(15).body()
-                if (clientList != null) {
-                    adapter.submitList(clientList.clients)
+        if (isInternetConnected()) {
+            viewModel.viewModelScope.launch {
+                val responseBody = viewModel.getClientList(15).body()
+                if (responseBody != null) {
+                    adapter.submitList(responseBody.clients)
                 } else {
                     Toast.makeText(requireContext(), R.string.failed_to_get_client_list,
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } else {
-                binding.noInternetImage.visibility = View.VISIBLE
             }
+        } else {
+            binding.noInternetImage.visibility = View.VISIBLE
         }
 
         return binding.root

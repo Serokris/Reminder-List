@@ -8,13 +8,13 @@
 
     <fragment
         android:id="@+id/reminderListFragment"
-        android:name="com.example.remindersaboutmeetingswithclients.presentation.reminderlist.ReminderListFragment"
+        android:name="com.example.remindersaboutmeetingswithclients.presentation.reminder.reminderlist.ReminderListFragment"
         android:label="Reminder list">
     </fragment>
 
     <fragment
         android:id="@+id/createReminderFragment"
-        android:name="com.example.remindersaboutmeetingswithclients.presentation.createreminder.CreateReminderFragment"
+        android:name="com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragment"
         android:label="Creating reminder"
         tools:layout="@layout/fragment_create_reminder">
         <argument
