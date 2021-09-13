@@ -16,6 +16,8 @@ object ReminderNotification {
     private const val CHANNEL_ID = "channelID"
     private const val CHANNEL_NAME = "NotificationChannel"
 
+    var currentClientFullName: String = ""
+
     fun createNotification(context: Context) {
         if (!this::notificationManager.isInitialized)
             initNotificationManager(context)
@@ -23,17 +25,19 @@ object ReminderNotification {
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        val pendingIntent =
-            PendingIntent.getActivity(
-                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(
+            context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val bigText = "You have a meeting with $currentClientFullName in an hour!"
 
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_notification)
             .setWhen(System.currentTimeMillis())
             .setContentIntent(pendingIntent)
-            .setContentTitle("You have a meeting with a client in an hour!")
-            .setContentText("Go to the app to see the scheduled appointments")
+            .setContentTitle("Reminder")
+            .setStyle(NotificationCompat.BigTextStyle().bigText(bigText))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         val uniqueNotificationId = System.currentTimeMillis().toInt()
@@ -52,7 +56,7 @@ object ReminderNotification {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }

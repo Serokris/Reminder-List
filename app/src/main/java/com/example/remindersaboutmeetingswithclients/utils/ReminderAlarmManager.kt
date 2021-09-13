@@ -4,7 +4,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.example.remindersaboutmeetingswithclients.utils.notification.NotificationReceiver
 import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.REMINDER_LIST_FRAGMENT_PREF_NAME
 import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.SAVED_LIST_OF_REQUEST_CODES

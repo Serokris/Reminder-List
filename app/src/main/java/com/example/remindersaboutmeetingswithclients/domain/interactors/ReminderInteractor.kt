@@ -13,5 +13,4 @@ class ReminderInteractor @Inject constructor(private val reminderRepository: Rem
     suspend fun deleteAllReminder() = reminderRepository.deleteAllReminder()
 
     fun getAllReminders(): Flow<List<ReminderItem>> = reminderRepository.getAllReminders()
-
 }

@@ -30,6 +30,7 @@ import com.example.remindersaboutmeetingswithclients.utils.constants.CreateRemin
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_DATE_SWITCH
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_TIME_SWITCH
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_TITLE_TEXT
+import com.example.remindersaboutmeetingswithclients.utils.notification.ReminderNotification
 
 @AndroidEntryPoint
 class CreateReminderFragment : Fragment() {
@@ -119,6 +120,8 @@ class CreateReminderFragment : Fragment() {
 
                         if (selectedTimeText.text.isNotEmpty()) {
                             ReminderAlarmManager.createAlarm(requireActivity(), calendar)
+                            ReminderNotification.currentClientFullName =
+                                "${client.fullName.firstName} ${client.fullName.lastName}"
                             reminder.requestCode = ReminderAlarmManager.getCurrentRequestCode
 
                             Toast.makeText(
@@ -133,8 +136,7 @@ class CreateReminderFragment : Fragment() {
                         requireContext(), R.string.not_valid_date_or_time, Toast.LENGTH_LONG
                     ).show()
                 } else Toast.makeText(
-                    requireContext(), R.string.fill_in_all_required_fields,
-                    Toast.LENGTH_LONG
+                    requireContext(), R.string.fill_in_all_required_fields, Toast.LENGTH_LONG
                 ).show()
             }
         }
