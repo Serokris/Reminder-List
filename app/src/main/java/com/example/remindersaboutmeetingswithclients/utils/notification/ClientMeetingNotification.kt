@@ -10,13 +10,17 @@ import androidx.core.app.NotificationCompat
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.presentation.MainActivity
 
-object ReminderNotification {
+object ClientMeetingNotification {
 
     private lateinit var notificationManager: NotificationManager
     private const val CHANNEL_ID = "channelID"
     private const val CHANNEL_NAME = "NotificationChannel"
 
-    var currentClientFullName: String = ""
+    private var currentClientFullName: String = ""
+
+    fun setCurrentClientFullName(clientFullName: String) {
+        currentClientFullName = clientFullName
+    }
 
     fun createNotification(context: Context) {
         if (!this::notificationManager.isInitialized)
@@ -29,7 +33,7 @@ object ReminderNotification {
             context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val bigText = "You have a meeting with $currentClientFullName in an hour!"
+        val notificationText = "You have a meeting with $currentClientFullName in an hour!"
 
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setAutoCancel(true)
@@ -37,7 +41,8 @@ object ReminderNotification {
             .setWhen(System.currentTimeMillis())
             .setContentIntent(pendingIntent)
             .setContentTitle("Reminder")
-            .setStyle(NotificationCompat.BigTextStyle().bigText(bigText))
+            .setContentText(notificationText)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         val uniqueNotificationId = System.currentTimeMillis().toInt()

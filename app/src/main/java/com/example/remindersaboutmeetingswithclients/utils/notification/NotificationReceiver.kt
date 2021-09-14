@@ -6,6 +6,6 @@ import android.content.Intent
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        ReminderNotification.createNotification(context)
+        ClientMeetingNotification.createNotification(context)
     }
 }

@@ -30,7 +30,7 @@ import com.example.remindersaboutmeetingswithclients.utils.constants.CreateRemin
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_DATE_SWITCH
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_TIME_SWITCH
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_TITLE_TEXT
-import com.example.remindersaboutmeetingswithclients.utils.notification.ReminderNotification
+import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMeetingNotification
 
 @AndroidEntryPoint
 class CreateReminderFragment : Fragment() {
@@ -120,8 +120,11 @@ class CreateReminderFragment : Fragment() {
 
                         if (selectedTimeText.text.isNotEmpty()) {
                             ReminderAlarmManager.createAlarm(requireActivity(), calendar)
-                            ReminderNotification.currentClientFullName =
+
+                            val currentClientFullName =
                                 "${client.fullName.firstName} ${client.fullName.lastName}"
+                            ClientMeetingNotification.setCurrentClientFullName(currentClientFullName)
+
                             reminder.requestCode = ReminderAlarmManager.getCurrentRequestCode
 
                             Toast.makeText(
