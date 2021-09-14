@@ -185,12 +185,14 @@
             app:layout_constraintStart_toEndOf="@+id/selectedClientImage"
             app:layout_constraintTop_toBottomOf="@+id/fullNameSelectedClient"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/selectClientButton"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/select_client"
+            android:textColor="@color/white"
+            android:background="@drawable/round_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"

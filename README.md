@@ -7,13 +7,15 @@ One hour before the appointment time with a specific client you receive a notifi
 
 ## __Screenshots__
 
-![](screenshots/2021-08-25%2016.08.53.jpg)
-![](screenshots/2021-08-25%2016.08.58.jpg)
-![](screenshots/2021-08-25%2016.09.00.jpg)
-![](screenshots/2021-08-25%2016.09.03.jpg)
-![](screenshots/2021-08-25%2016.09.07.jpg)
-![](screenshots/2021-08-25%2016.09.09.jpg)
-![](screenshots/2021-08-25%2016.09.11.jpg)
+![](screenshots/2021-09-14%2016.17.55.jpg)
+![](screenshots/2021-09-14%2016.17.59.jpg)
+![](screenshots/2021-09-14%2016.18.04.jpg)
+![](screenshots/2021-09-14%2016.18.08.jpg)
+![](screenshots/2021-09-14%2016.18.11.jpg)
+![](screenshots/2021-09-14%2016.18.15.jpg)
+![](screenshots/2021-09-14%2016.18.19.jpg)
+![](screenshots/2021-09-14%2016.18.22.jpg)
+![](screenshots/2021-09-14%2016.18.26.jpg)
 
 ## __The main technologies used to create this application__
 
