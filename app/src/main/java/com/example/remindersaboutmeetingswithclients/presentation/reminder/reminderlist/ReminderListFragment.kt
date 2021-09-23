@@ -14,7 +14,6 @@ import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminderListBinding
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
-import com.example.remindersaboutmeetingswithclients.presentation.reminder.ReminderViewModel
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
 import com.example.remindersaboutmeetingswithclients.utils.SharedPreferenceUtils
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CREATE_REMINDER_FRAGMENT_PREF_NAME
@@ -25,13 +24,19 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ReminderListFragment : Fragment() {
 
-    private val viewModel: ReminderViewModel by viewModels()
+    private val viewModel: ReminderListViewModel by viewModels()
+    private lateinit var binding: FragmentReminderListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentReminderListBinding.inflate(inflater)
+        binding = FragmentReminderListBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         SharedPreferenceUtils.clearSharedPreferenceIfPreferenceIsSet(
             requireContext(),
@@ -75,7 +80,6 @@ class ReminderListFragment : Fragment() {
         }).attachToRecyclerView(binding.reminderRecyclerView)
 
         setHasOptionsMenu(true)
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

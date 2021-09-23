@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
-import com.example.remindersaboutmeetingswithclients.presentation.reminder.ReminderViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,19 +34,22 @@ import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMe
 @AndroidEntryPoint
 class CreateReminderFragment : Fragment() {
 
-    private val viewModel: ReminderViewModel by viewModels()
+    private val viewModel: CreateReminderViewModel by viewModels()
     private lateinit var binding: FragmentCreateReminderBinding
     private lateinit var calendar: Calendar
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentCreateReminderBinding.inflate(inflater)
         calendar = Calendar.getInstance()
-
         loadStateFragmentDataInPreference(requireContext())
+        return binding.root
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
         val client = CreateReminderFragmentArgs.fromBundle(requireArguments()).client
@@ -143,8 +145,6 @@ class CreateReminderFragment : Fragment() {
                 ).show()
             }
         }
-
-        return binding.root
     }
 
     private fun requiredFieldsIsFilled(): Boolean {

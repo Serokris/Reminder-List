@@ -24,12 +24,18 @@ class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
 
     private val viewModel: ClientListViewModel by viewModels()
     private lateinit var navController: NavController
+    private lateinit var binding: FragmentClientListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentClientListBinding.inflate(inflater)
+        binding = FragmentClientListBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
         val adapter = ClientListAdapter(this, requireContext())
@@ -50,8 +56,6 @@ class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
         } else {
             binding.noInternetImage.visibility = View.VISIBLE
         }
-
-        return binding.root
     }
 
     override fun onClientClick(client: Client) {

@@ -1,15 +1,18 @@
-package com.example.remindersaboutmeetingswithclients.presentation.reminder
+package com.example.remindersaboutmeetingswithclients.presentation.reminder.reminderlist
 
-import androidx.lifecycle.*
-import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.remindersaboutmeetingswithclients.domain.interactors.ReminderInteractor
+import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReminderViewModel @Inject constructor(
+class ReminderListViewModel @Inject constructor(
     private val reminderInteractor: ReminderInteractor
 ) : ViewModel() {
     fun insert(reminderItem: ReminderItem) {
