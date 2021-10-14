@@ -13,26 +13,27 @@ import com.example.remindersaboutmeetingswithclients.domain.models.Client
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentClientListBinding
 import android.net.ConnectivityManager
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.example.remindersaboutmeetingswithclients.R
+import com.example.remindersaboutmeetingswithclients.data.mappers.toClientResponse
+import com.example.remindersaboutmeetingswithclients.data.source.remote.RandomUserApiService
+import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
+import com.example.remindersaboutmeetingswithclients.utils.constants.NetworkConstants
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @AndroidEntryPoint
-class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
+class ClientListFragment :
+    BaseBindingFragment<FragmentClientListBinding>(FragmentClientListBinding::inflate),
+    ClientListAdapter.ClientClickListener {
 
     private val viewModel: ClientListViewModel by viewModels()
-    private lateinit var navController: NavController
-    private lateinit var binding: FragmentClientListBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentClientListBinding.inflate(inflater)
-        return binding.root
-    }
+    private var navController: NavController? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,14 +45,8 @@ class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
 
         if (isInternetConnected()) {
             viewModel.viewModelScope.launch {
-                val responseBody = viewModel.getClientList(15).body()
-                if (responseBody != null) {
-                    adapter.submitList(responseBody.clients)
-                } else {
-                    Toast.makeText(requireContext(), R.string.failed_to_get_client_list,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                val clientList = viewModel.getClientList(15)
+                adapter.submitList(clientList)
             }
         } else {
             binding.noInternetImage.visibility = View.VISIBLE
@@ -59,8 +54,8 @@ class ClientListFragment : Fragment(), ClientListAdapter.ClientClickListener {
     }
 
     override fun onClientClick(client: Client) {
-        navController.navigate(
-            ClientListFragmentDirections.actionClientListFragmentToCreateReminderFragment(client)
+        navController?.navigate(
+            ClientListFragmentDirections.actionClientListFragmentToCreateReminderFragment(client.toClientResponse())
         )
     }
 

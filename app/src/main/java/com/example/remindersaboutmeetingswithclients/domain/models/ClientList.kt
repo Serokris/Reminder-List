@@ -1,5 +1,5 @@
 package com.example.remindersaboutmeetingswithclients.domain.models
 
-data class Picture(
-    val large: String
+data class ClientList(
+    val clients: List<Client>
 )

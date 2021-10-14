@@ -2,10 +2,7 @@ package com.example.remindersaboutmeetingswithclients.presentation.reminder.crea
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.remindersaboutmeetingswithclients.R
@@ -22,6 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
 import android.content.Context.MODE_PRIVATE
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.example.remindersaboutmeetingswithclients.data.mappers.toClient
+import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CREATE_REMINDER_FRAGMENT_PREF_NAME
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_CALENDAR_TIME
 import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_SELECTED_DATE_TEXT
@@ -32,27 +33,21 @@ import com.example.remindersaboutmeetingswithclients.utils.constants.CreateRemin
 import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMeetingNotification
 
 @AndroidEntryPoint
-class CreateReminderFragment : Fragment() {
+class CreateReminderFragment :
+    BaseBindingFragment<FragmentCreateReminderBinding>(FragmentCreateReminderBinding::inflate) {
 
     private val viewModel: CreateReminderViewModel by viewModels()
-    private lateinit var binding: FragmentCreateReminderBinding
     private lateinit var calendar: Calendar
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCreateReminderBinding.inflate(inflater)
-        calendar = Calendar.getInstance()
-        loadStateFragmentDataInPreference(requireContext())
-        return binding.root
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        calendar = Calendar.getInstance()
         val navController = findNavController()
         val client = CreateReminderFragmentArgs.fromBundle(requireArguments()).client
+
+        loadStateFragmentDataInPreference(requireContext())
 
         binding.apply {
             selectClientButton.setOnClickListener {
@@ -117,7 +112,7 @@ class CreateReminderFragment : Fragment() {
                             titleEditText.text.toString(),
                             selectedDateText.text.toString(),
                             selectedTimeText.text.toString(),
-                            client!!
+                            client?.toClient()!!
                         )
 
                         if (selectedTimeText.text.isNotEmpty()) {

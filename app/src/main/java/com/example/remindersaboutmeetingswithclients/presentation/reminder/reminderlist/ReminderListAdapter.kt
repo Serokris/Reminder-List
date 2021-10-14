@@ -15,7 +15,13 @@ class ReminderListAdapter(private val context: Context) :
     ListAdapter<ReminderItem, ReminderListAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ReminderListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
+        return ViewHolder(
+            ReminderListItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ), context
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

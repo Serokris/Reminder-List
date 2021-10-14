@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ReminderInteractor @Inject constructor(private val reminderRepository: ReminderRepository) {
+
     suspend fun insert(reminderItem: ReminderItem) = reminderRepository.insert(reminderItem)
 
     suspend fun delete(reminderItem: ReminderItem) = reminderRepository.delete(reminderItem)

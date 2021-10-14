@@ -19,7 +19,7 @@
         tools:layout="@layout/fragment_create_reminder">
         <argument
             android:name="client"
-            app:argType="com.example.remindersaboutmeetingswithclients.domain.models.Client"
+            app:argType="com.example.remindersaboutmeetingswithclients.data.models.ClientResponse"
             app:nullable="true"
             android:defaultValue="@null"/>
     </fragment>

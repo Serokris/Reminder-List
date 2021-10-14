@@ -15,7 +15,13 @@ class ClientListAdapter(private val listener: ClientClickListener, private val c
     ListAdapter<Client, ClientListAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ClientListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
+        return ViewHolder(
+            ClientListItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ), context
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -23,8 +29,10 @@ class ClientListAdapter(private val listener: ClientClickListener, private val c
         holder.bind(currentItem)
     }
 
-    inner class ViewHolder(private val binding: ClientListItemBinding, private val context: Context) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(
+        private val binding: ClientListItemBinding,
+        private val context: Context
+    ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(client: Client) {
             binding.apply {

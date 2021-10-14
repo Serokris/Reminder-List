@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminderListBinding
 import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
+import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
 import com.example.remindersaboutmeetingswithclients.utils.SharedPreferenceUtils
@@ -22,18 +22,10 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReminderListFragment : Fragment() {
+class ReminderListFragment :
+    BaseBindingFragment<FragmentReminderListBinding>(FragmentReminderListBinding::inflate) {
 
     private val viewModel: ReminderListViewModel by viewModels()
-    private lateinit var binding: FragmentReminderListBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentReminderListBinding.inflate(inflater)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
