@@ -1,26 +1,23 @@
 package com.example.remindersaboutmeetingswithclients.presentation.reminder.reminderlist
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
+import com.example.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.databinding.ReminderListItemBinding
 
-class ReminderListAdapter(private val context: Context) :
+class ReminderListAdapter :
     ListAdapter<ReminderItem, ReminderListAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ReminderListItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            ), context
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
     }
 
@@ -29,8 +26,7 @@ class ReminderListAdapter(private val context: Context) :
         holder.bind(currentItem)
     }
 
-    class ViewHolder(private val binding: ReminderListItemBinding, private val context: Context) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ReminderListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(reminderItem: ReminderItem) {
             binding.apply {
@@ -39,7 +35,7 @@ class ReminderListAdapter(private val context: Context) :
                 clientFullName.text =
                     "${reminderItem.client.fullName.firstName} ${reminderItem.client.fullName.lastName}"
                 clientEmail.text = reminderItem.client.email
-                Glide.with(context).load(reminderItem.client.picture.large).into(clientImage)
+                Glide.with(root).load(reminderItem.client.picture.large).into(clientImage)
                 executePendingBindings()
             }
         }

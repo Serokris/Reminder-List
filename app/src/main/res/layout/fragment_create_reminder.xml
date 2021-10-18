@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_dark_background"
-        tools:context=".presentation.reminder.createreminder.CreateReminderFragment">
+        android:background="@color/cardview_dark_background">
 
         <ImageView
             android:id="@+id/titleImage"
@@ -18,7 +15,7 @@
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/titleEditText"
@@ -35,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/titleImage"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/dateImage"
@@ -45,7 +42,7 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleImage"/>
+            app:layout_constraintTop_toBottomOf="@+id/titleImage" />
 
         <TextView
             android:id="@+id/selectedDateText"
@@ -55,12 +52,12 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="70dp"
             android:fontFamily="@font/montserrat_regular"
+            android:hint="@string/date"
             android:padding="11dp"
             android:paddingStart="5dp"
-            android:hint="@string/date"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/timeImage"
-            app:layout_constraintTop_toBottomOf="@+id/titleEditText"/>
+            app:layout_constraintTop_toBottomOf="@+id/titleEditText" />
 
         <ImageView
             android:id="@+id/timeImage"
@@ -70,10 +67,10 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_clock"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateImage"/>
+            app:layout_constraintTop_toBottomOf="@+id/dateImage" />
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/setDateSwitch"
+            android:id="@+id/dateSwitcher"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginTop="14dp"
@@ -81,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/selectedDateText"
-            app:layout_constraintTop_toBottomOf="@+id/titleEditText"/>
+            app:layout_constraintTop_toBottomOf="@+id/titleEditText" />
 
         <View
             android:id="@+id/view"
@@ -91,7 +88,7 @@
             android:layout_marginTop="2dp"
             android:background="@color/dark_grey"
             app:layout_constraintStart_toEndOf="@+id/dateImage"
-            app:layout_constraintTop_toBottomOf="@+id/selectedDateText"/>
+            app:layout_constraintTop_toBottomOf="@+id/selectedDateText" />
 
         <TextView
             android:id="@+id/selectedTimeText"
@@ -101,15 +98,15 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="70dp"
             android:fontFamily="@font/montserrat_regular"
+            android:hint="@string/time"
             android:padding="11dp"
             android:paddingStart="5dp"
-            android:hint="@string/time"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/timeImage"
-            app:layout_constraintTop_toBottomOf="@+id/selectedDateText"/>
+            app:layout_constraintTop_toBottomOf="@+id/selectedDateText" />
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/setTimeSwitch"
+            android:id="@+id/timeSwitcher"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginTop="14dp"
@@ -117,7 +114,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/selectedTimeText"
-            app:layout_constraintTop_toBottomOf="@+id/selectedDateText"/>
+            app:layout_constraintTop_toBottomOf="@+id/selectedDateText" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/selectedClientImage"
@@ -129,17 +126,17 @@
             android:src="@drawable/ic_person"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timeImage"
-            app:shapeAppearanceOverlay="@style/circleImageViewStyle"/>
+            app:shapeAppearanceOverlay="@style/circleImageViewStyle" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginStart="63dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/dark_grey"
             app:layout_constraintStart_toEndOf="@+id/timeImage"
-            app:layout_constraintTop_toBottomOf="@+id/selectedTimeText"/>
+            app:layout_constraintTop_toBottomOf="@+id/selectedTimeText" />
 
         <TextView
             android:id="@+id/fullNameSelectedClient"
@@ -149,14 +146,14 @@
             android:layout_marginTop="23dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/montserrat_regular"
-            android:paddingStart="5dp"
             android:hint="@string/full_name"
+            android:paddingStart="5dp"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/selectedClientImage"
-            app:layout_constraintTop_toBottomOf="@+id/selectedTimeText"/>
+            app:layout_constraintTop_toBottomOf="@+id/selectedTimeText" />
 
         <View
             android:layout_width="match_parent"
@@ -166,7 +163,7 @@
             android:layout_marginEnd="8dp"
             android:background="@color/dark_grey"
             app:layout_constraintStart_toEndOf="@+id/selectedClientImage"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameSelectedClient"/>
+            app:layout_constraintTop_toBottomOf="@+id/fullNameSelectedClient" />
 
         <TextView
             android:id="@+id/emailSelectedClient"
@@ -176,39 +173,41 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/montserrat_regular"
-            android:paddingStart="5dp"
             android:hint="@string/email"
+            android:paddingStart="5dp"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.944"
             app:layout_constraintStart_toEndOf="@+id/selectedClientImage"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameSelectedClient"/>
+            app:layout_constraintTop_toBottomOf="@+id/fullNameSelectedClient" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/selectClientButton"
-            android:layout_width="130dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_shape"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/select_client"
             android:textColor="@color/white"
-            android:background="@drawable/round_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailSelectedClient"/>
+            app:layout_constraintTop_toBottomOf="@+id/emailSelectedClient" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/createReminderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
             android:src="@drawable/ic_check"
-            app:tint="@android:color/white"
             app:backgroundTint="@color/light_red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"/>
+            app:tint="@android:color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

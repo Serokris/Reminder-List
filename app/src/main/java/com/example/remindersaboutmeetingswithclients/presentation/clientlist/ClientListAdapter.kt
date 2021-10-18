@@ -1,61 +1,28 @@
 package com.example.remindersaboutmeetingswithclients.presentation.clientlist
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.remindersaboutmeetingswithclients.domain.models.Client
+import com.example.domain.models.Client
 import com.example.remindersaboutmeetingswithclients.databinding.ClientListItemBinding
+import com.livermor.delegateadapter.delegate.ViewBindingDelegateAdapter
 
-class ClientListAdapter(private val listener: ClientClickListener, private val context: Context) :
-    ListAdapter<Client, ClientListAdapter.ViewHolder>(DiffCallback) {
+class ClientListAdapter(private val listener: ClientClickListener) :
+    ViewBindingDelegateAdapter<Client, ClientListItemBinding>(ClientListItemBinding::inflate) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ClientListItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            ), context
-        )
-    }
+    @SuppressLint("SetTextI18n")
+    override fun ClientListItemBinding.onBind(item: Client) {
+        clientFullName.text = "${item.fullName.firstName} ${item.fullName.lastName}"
+        clientEmail.text = item.email
+        Glide.with(root).load(item.picture.large).into(clientImage)
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        holder.bind(currentItem)
-    }
-
-    inner class ViewHolder(
-        private val binding: ClientListItemBinding,
-        private val context: Context
-    ) : RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SetTextI18n")
-        fun bind(client: Client) {
-            binding.apply {
-                clientFullName.text = "${client.fullName.firstName} ${client.fullName.lastName}"
-                clientEmail.text = client.email
-                Glide.with(context).load(client.picture.large).into(clientImage)
-
-                root.setOnClickListener {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val currentClient = getItem(position)
-                        listener.onClientClick(currentClient)
-                    }
-                }
-            }
-            binding.executePendingBindings()
+        root.setOnClickListener {
+            listener.onClientClick(item)
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Client>() {
-        override fun areContentsTheSame(oldItem: Client, newItem: Client) = oldItem == newItem
-        override fun areItemsTheSame(oldItem: Client, newItem: Client) = oldItem == newItem
-    }
+    override fun isForViewType(item: Any): Boolean = item is Client
+
+    override fun Client.getItemId(): Any = email
 
     interface ClientClickListener {
         fun onClientClick(client: Client)

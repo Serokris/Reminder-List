@@ -8,28 +8,18 @@ import com.bumptech.glide.Glide
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentCreateReminderBinding
 import android.app.DatePickerDialog
-import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
+import com.example.data.mappers.toClient
+import com.example.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
-import android.content.Context.MODE_PRIVATE
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.example.remindersaboutmeetingswithclients.data.mappers.toClient
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CREATE_REMINDER_FRAGMENT_PREF_NAME
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_CALENDAR_TIME
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_SELECTED_DATE_TEXT
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_SELECTED_TIME_TEXT
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_DATE_SWITCH
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_STATE_OF_TIME_SWITCH
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.SAVED_TITLE_TEXT
+import com.example.remindersaboutmeetingswithclients.utils.notification.ClientDataForNotification
 import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMeetingNotification
 
 @AndroidEntryPoint
@@ -39,19 +29,24 @@ class CreateReminderFragment :
     private val viewModel: CreateReminderViewModel by viewModels()
     private lateinit var calendar: Calendar
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         calendar = Calendar.getInstance()
+
+        initViews()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initViews() {
         val navController = findNavController()
         val client = CreateReminderFragmentArgs.fromBundle(requireArguments()).client
 
-        loadStateFragmentDataInPreference(requireContext())
+        getViewsState()
 
         binding.apply {
             selectClientButton.setOnClickListener {
-                saveStateFragmentDataInPreference(requireContext())
+                saveViewsState()
                 navController.navigate(R.id.clientListFragment)
             }
 
@@ -62,7 +57,7 @@ class CreateReminderFragment :
                 emailSelectedClient.text = client.email
             }
 
-            setDateSwitch.setOnCheckedChangeListener { _, isChecked ->
+            dateSwitcher.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     val mYear = calendar.get(Calendar.YEAR)
                     val mMonth = calendar.get(Calendar.MONTH)
@@ -76,12 +71,12 @@ class CreateReminderFragment :
                             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                         }, mYear, mMonth, mDay)
 
-                    datePickedDialog.setOnCancelListener { setDateSwitch.isChecked = false }
+                    datePickedDialog.setOnCancelListener { dateSwitcher.isChecked = false }
                     datePickedDialog.show()
                 } else selectedDateText.text = ""
             }
 
-            setTimeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            timeSwitcher.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     val timePicker = MaterialTimePicker.Builder()
                         .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -99,7 +94,7 @@ class CreateReminderFragment :
                         selectedTimeText.text =
                             DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.time)
                     }
-                    timePicker.addOnNegativeButtonClickListener { setTimeSwitch.isChecked = false }
+                    timePicker.addOnNegativeButtonClickListener { timeSwitcher.isChecked = false }
                     timePicker.show(childFragmentManager, "time-picker")
                 } else selectedTimeText.text = ""
             }
@@ -118,9 +113,10 @@ class CreateReminderFragment :
                         if (selectedTimeText.text.isNotEmpty()) {
                             ReminderAlarmManager.createAlarm(requireActivity(), calendar)
 
-                            val currentClientFullName =
-                                "${client.fullName.firstName} ${client.fullName.lastName}"
-                            ClientMeetingNotification.setCurrentClientFullName(currentClientFullName)
+                            val clientFullName = "${client.fullName.firstName} ${client.fullName.lastName}"
+                            val clientData = ClientDataForNotification(clientFullName, calendar.timeInMillis)
+
+                            ClientMeetingNotification.addClientDataToList(clientData, requireContext())
 
                             reminder.requestCode = ReminderAlarmManager.getCurrentRequestCode
 
@@ -156,41 +152,31 @@ class CreateReminderFragment :
         return !calendar.before(Calendar.getInstance())
     }
 
-    private fun saveStateFragmentDataInPreference(context: Context) {
-        val sharedPreferences =
-            context.getSharedPreferences(CREATE_REMINDER_FRAGMENT_PREF_NAME, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
+    private fun saveViewsState() {
         binding.apply {
-            editor.putString(SAVED_TITLE_TEXT, this.titleEditText.text.toString())
-            editor.putString(SAVED_SELECTED_DATE_TEXT, this.selectedDateText.text.toString())
-            editor.putString(SAVED_SELECTED_TIME_TEXT, this.selectedTimeText.text.toString())
-            editor.putBoolean(SAVED_STATE_OF_DATE_SWITCH, this.setDateSwitch.isChecked)
-            editor.putBoolean(SAVED_STATE_OF_TIME_SWITCH, this.setTimeSwitch.isChecked)
-            editor.putLong(SAVED_CALENDAR_TIME, calendar.timeInMillis)
+            viewModel.saveViewsState(
+                ViewFieldValues(
+                    titleEditText.text.toString(),
+                    selectedDateText.text.toString(),
+                    selectedTimeText.text.toString(),
+                    dateSwitcher.isChecked,
+                    timeSwitcher.isChecked,
+                    calendar.timeInMillis
+                )
+            )
         }
-        editor.apply()
     }
 
-    private fun loadStateFragmentDataInPreference(context: Context) {
-        val sharedPreferences =
-            context.getSharedPreferences(CREATE_REMINDER_FRAGMENT_PREF_NAME, MODE_PRIVATE)
-
-        val savedTitleEdt = sharedPreferences.getString(SAVED_TITLE_TEXT, "")
-        val savedSelectedDateText = sharedPreferences.getString(SAVED_SELECTED_DATE_TEXT, "")
-        val savedSelectedTimeText = sharedPreferences.getString(SAVED_SELECTED_TIME_TEXT, "")
-        val savedDataSwitch = sharedPreferences.getBoolean(SAVED_STATE_OF_DATE_SWITCH, false)
-        val savedTimeSwitch = sharedPreferences.getBoolean(SAVED_STATE_OF_TIME_SWITCH, false)
-        val savedCalendarTime =
-            sharedPreferences.getLong(SAVED_CALENDAR_TIME, calendar.timeInMillis)
-
+    private fun getViewsState() {
         binding.apply {
-            titleEditText.setText(savedTitleEdt)
-            selectedDateText.text = savedSelectedDateText
-            selectedTimeText.text = savedSelectedTimeText
-            setDateSwitch.isChecked = savedDataSwitch
-            setTimeSwitch.isChecked = savedTimeSwitch
+            val viewFieldValues = viewModel.getViewsState(calendar)
+
+            titleEditText.setText(viewFieldValues.titleText)
+            selectedDateText.text = viewFieldValues.dateText
+            selectedTimeText.text = viewFieldValues.timeText
+            dateSwitcher.isChecked = viewFieldValues.dateSwitcherIsChecked
+            timeSwitcher.isChecked = viewFieldValues.timeSwitcherIsChecked
+            calendar.timeInMillis = viewFieldValues.calendarTime
         }
-        calendar.timeInMillis = savedCalendarTime
     }
 }

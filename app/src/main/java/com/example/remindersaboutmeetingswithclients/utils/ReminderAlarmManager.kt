@@ -3,10 +3,12 @@ package com.example.remindersaboutmeetingswithclients.utils
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.util.Log
 import com.example.remindersaboutmeetingswithclients.utils.notification.NotificationReceiver
 import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.REMINDER_LIST_FRAGMENT_PREF_NAME
-import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.SAVED_LIST_OF_REQUEST_CODES
+import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.REQUEST_CODES_LIST
 import java.util.*
 import org.json.JSONArray
 import java.lang.Exception
@@ -29,7 +31,8 @@ object ReminderAlarmManager {
         saveRequestCodesInPreference(context)
 
         val pendingIntent = PendingIntent.getBroadcast(
-            context, uniqueRequestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+            context, uniqueRequestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT
+        )
 
         val oneHour = 3600000L
         alarmManager.setExact(
@@ -43,7 +46,8 @@ object ReminderAlarmManager {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
-            context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+            context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT
+        )
 
         alarmManager.cancel(pendingIntent)
         pendingIntent.cancel()
@@ -58,13 +62,13 @@ object ReminderAlarmManager {
     }
 
     private fun getRequestCodesListFromPreference(context: Context): List<Int> {
-        val requestCodesList: MutableList<Int> = ArrayList()
+        val requestCodesList = mutableListOf<Int>()
         try {
             val sharedPreferences =
-                context.getSharedPreferences(REMINDER_LIST_FRAGMENT_PREF_NAME, Context.MODE_PRIVATE)
+                context.getSharedPreferences(REMINDER_LIST_FRAGMENT_PREF_NAME, MODE_PRIVATE)
 
             val jsonArray =
-                JSONArray(sharedPreferences.getString(SAVED_LIST_OF_REQUEST_CODES, "[]"))
+                JSONArray(sharedPreferences.getString(REQUEST_CODES_LIST, "[]"))
 
             for (i in 0 until jsonArray.length()) {
                 requestCodesList.add(jsonArray.getInt(i))
@@ -77,6 +81,7 @@ object ReminderAlarmManager {
 
     private fun saveRequestCodesInPreference(context: Context) {
         val jsonArray = JSONArray()
+
         for (requestCode in requestCodesList) {
             jsonArray.put(requestCode)
         }
@@ -84,11 +89,10 @@ object ReminderAlarmManager {
         val sharedPreferences =
             context.getSharedPreferences(
                 REMINDER_LIST_FRAGMENT_PREF_NAME,
-                Context.MODE_PRIVATE
+                MODE_PRIVATE
             )
 
         val editor = sharedPreferences.edit()
-        editor.putString(SAVED_LIST_OF_REQUEST_CODES, jsonArray.toString())
-        editor.apply()
+        editor.putString(REQUEST_CODES_LIST, jsonArray.toString()).apply()
     }
 }

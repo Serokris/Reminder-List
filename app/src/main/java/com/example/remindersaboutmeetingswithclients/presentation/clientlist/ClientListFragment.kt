@@ -2,30 +2,19 @@ package com.example.remindersaboutmeetingswithclients.presentation.clientlist
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.example.remindersaboutmeetingswithclients.domain.models.Client
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentClientListBinding
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.viewModelScope
-import com.example.remindersaboutmeetingswithclients.R
-import com.example.remindersaboutmeetingswithclients.data.mappers.toClientResponse
-import com.example.remindersaboutmeetingswithclients.data.source.remote.RandomUserApiService
+import com.example.data.mappers.toClientResponse
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
-import com.example.remindersaboutmeetingswithclients.utils.constants.NetworkConstants
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.livermor.delegateadapter.delegate.CompositeDelegateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @AndroidEntryPoint
 class ClientListFragment :
@@ -38,22 +27,29 @@ class ClientListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController = findNavController()
-        val adapter = ClientListAdapter(this, requireContext())
+        initNavController()
+        initViews()
+    }
 
+    private fun initNavController() {
+        navController = findNavController()
+    }
+
+    private fun initViews() {
+        val adapter = CompositeDelegateAdapter(ClientListAdapter(this))
         binding.clientRecyclerView.adapter = adapter
 
         if (isInternetConnected()) {
             viewModel.viewModelScope.launch {
                 val clientList = viewModel.getClientList(15)
-                adapter.submitList(clientList)
+                adapter.swapData(clientList)
             }
         } else {
             binding.noInternetImage.visibility = View.VISIBLE
         }
     }
 
-    override fun onClientClick(client: Client) {
+    override fun onClientClick(client: com.example.domain.models.Client) {
         navController?.navigate(
             ClientListFragmentDirections.actionClientListFragmentToCreateReminderFragment(client.toClientResponse())
         )

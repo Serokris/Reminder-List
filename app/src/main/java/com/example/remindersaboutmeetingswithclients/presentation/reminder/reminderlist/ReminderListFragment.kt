@@ -3,6 +3,7 @@ package com.example.remindersaboutmeetingswithclients.presentation.reminder.remi
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -11,15 +12,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminderListBinding
-import com.example.remindersaboutmeetingswithclients.domain.models.ReminderItem
+import com.example.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
-import com.example.remindersaboutmeetingswithclients.utils.SharedPreferenceUtils
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CREATE_REMINDER_FRAGMENT_PREF_NAME
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONArray
 
 @AndroidEntryPoint
 class ReminderListFragment :
@@ -30,18 +30,19 @@ class ReminderListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        SharedPreferenceUtils.clearSharedPreferenceIfPreferenceIsSet(
-            requireContext(),
-            CREATE_REMINDER_FRAGMENT_PREF_NAME
-        )
+        initViews()
+    }
+
+    private fun initViews() {
+        viewModel.clearViewsStateInCreateReminderFragment()
 
         val navController = findNavController()
-        val adapter = ReminderListAdapter(requireContext())
+        val adapter = ReminderListAdapter()
 
-        viewModel.getAllReminders().observe(viewLifecycleOwner, { list ->
-            adapter.submitList(list)
+        viewModel.getAllReminders().observe(viewLifecycleOwner, { reminderList ->
+            adapter.submitList(reminderList)
             binding.reminderImage.visibility =
-                if (list.isEmpty()) View.VISIBLE else View.INVISIBLE
+                if (reminderList.isEmpty()) View.VISIBLE else View.INVISIBLE
         })
 
         binding.apply {
@@ -117,12 +118,9 @@ class ReminderListFragment :
                 viewModel.insert(reminder)
             }
         }.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-            override fun onShown(transientBottomBar: Snackbar?) {
-                super.onShown(transientBottomBar)
-            }
-
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 super.onDismissed(transientBottomBar, event)
+
                 if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
                     ReminderAlarmManager.cancelAlarm(requireContext(), reminder.requestCode)
                 }
