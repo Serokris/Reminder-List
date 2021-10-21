@@ -3,23 +3,24 @@ package com.example.remindersaboutmeetingswithclients.presentation.reminder.remi
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminderListBinding
-import com.example.domain.models.ReminderItem
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
-import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
+import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONArray
 
 @AndroidEntryPoint
 class ReminderListFragment :
@@ -117,6 +118,10 @@ class ReminderListFragment :
             setAction("Undo") {
                 viewModel.insert(reminder)
             }
+            setBackgroundTint(resources.getColor(R.color.dark_grey))
+            setActionTextColor(resources.getColor(R.color.light_red))
+            setTextColor(resources.getColor(R.color.white))
+
         }.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 super.onDismissed(transientBottomBar, event)

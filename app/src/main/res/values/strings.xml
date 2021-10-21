@@ -11,10 +11,8 @@
     <string name="select_time_for_reminder">Select a time for the reminder</string>
     <string name="fill_in_all_required_fields">To create a reminder, fill in all required fields
         (the time field is optional)</string>
-    <string name="the_time_is_not_valid">The time you set is not valid!</string>
     <string name="you_will_receive_notification">An hour before the meeting you will receive a
         notification</string>
     <string name="not_valid_date_or_time">The date and/or time are not valid</string>
     <string name="confirm_action">Confirm action</string>
-    <string name="failed_to_get_client_list">Failed to get client list</string>
 </resources>

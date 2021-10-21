@@ -12,8 +12,6 @@ class RandomUserServiceRepositoryImpl(
 ) : RandomUserServiceRepository {
 
     override suspend fun getRandomClients(count: Int): List<Client> {
-        return withContext(Dispatchers.IO) {
-            apiService.getRandomClients(count).body()?.toClientList()!!
-        }
+        return apiService.getRandomClients(count).toClientList()
     }
 }

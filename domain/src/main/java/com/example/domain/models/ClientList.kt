@@ -1,5 +1,5 @@
 package com.example.domain.models
 
-data class wClientList(
+data class ClientList(
     val clients: List<Client>
 )

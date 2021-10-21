@@ -10,29 +10,42 @@
         android:background="@color/cardview_dark_background"
         tools:context=".presentation.clientlist.ClientListFragment">
 
-        <ImageView
+        <ProgressBar
+            android:id="@+id/loadingClientProgressBar"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/light_grey"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/clientRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/clientRecyclerView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/noInternetImage"
             android:layout_width="300dp"
             android:layout_height="350dp"
-            android:visibility="invisible"
             android:src="@drawable/ic_no_internet"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/clientRecyclerView"
             app:layout_constraintStart_toStartOf="@+id/clientRecyclerView"
-            app:layout_constraintTop_toTopOf="@+id/clientRecyclerView"/>
+            app:layout_constraintTop_toTopOf="@+id/clientRecyclerView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/clientRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:padding="4dp"
-            android:clipToPadding="false"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
