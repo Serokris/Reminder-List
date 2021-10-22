@@ -20,7 +20,7 @@
         <argument
             android:name="client"
             android:defaultValue="@null"
-            app:argType="com.example.data.models.ClientResponse"
+            app:argType="com.example.data.models.responses.ClientResponse"
             app:nullable="true" />
     </fragment>
 

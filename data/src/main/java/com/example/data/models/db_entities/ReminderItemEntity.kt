@@ -1,8 +1,9 @@
-package com.example.data.models
+package com.example.data.models.db_entities
 
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.data.models.responses.ClientResponse
 
 @Entity(tableName = "reminder-table")
 data class ReminderItemEntity(

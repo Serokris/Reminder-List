@@ -20,7 +20,6 @@ import com.livermor.delegateadapter.delegate.CompositeDelegateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ClientListFragment :

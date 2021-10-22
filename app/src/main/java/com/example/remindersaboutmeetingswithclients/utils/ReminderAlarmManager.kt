@@ -5,13 +5,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.util.Log
-import com.example.remindersaboutmeetingswithclients.utils.notification.NotificationReceiver
 import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.REMINDER_LIST_FRAGMENT_PREF_NAME
 import com.example.remindersaboutmeetingswithclients.utils.constants.ReminderListFragmentConstants.REQUEST_CODES_LIST
-import java.util.*
+import com.example.remindersaboutmeetingswithclients.utils.notification.NotificationReceiver
 import org.json.JSONArray
-import java.lang.Exception
+import java.util.*
 
 object ReminderAlarmManager {
 

@@ -1,26 +1,26 @@
 package com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.example.remindersaboutmeetingswithclients.R
-import com.example.remindersaboutmeetingswithclients.databinding.FragmentCreateReminderBinding
-import android.app.DatePickerDialog
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.data.mappers.toClient
 import com.example.domain.models.ReminderItem
+import com.example.remindersaboutmeetingswithclients.R
+import com.example.remindersaboutmeetingswithclients.databinding.FragmentCreateReminderBinding
+import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
+import com.example.remindersaboutmeetingswithclients.utils.notification.ClientDataForNotification
+import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMeetingNotification
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
-import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
-import com.example.remindersaboutmeetingswithclients.utils.notification.ClientDataForNotification
-import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMeetingNotification
 
 @AndroidEntryPoint
 class CreateReminderFragment :

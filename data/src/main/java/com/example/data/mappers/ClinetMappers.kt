@@ -1,9 +1,9 @@
 package com.example.data.mappers
 
-import com.example.data.models.ClientListResponse
-import com.example.data.models.ClientResponse
-import com.example.data.models.FullNameResponse
-import com.example.data.models.PictureResponse
+import com.example.data.models.responses.ClientListResponse
+import com.example.data.models.responses.ClientResponse
+import com.example.data.models.responses.FullNameResponse
+import com.example.data.models.responses.PictureResponse
 import com.example.domain.models.Client
 import com.example.domain.models.FullName
 import com.example.domain.models.Picture
