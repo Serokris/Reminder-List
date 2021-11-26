@@ -7,12 +7,10 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.ReminderInteractor
 import com.example.domain.models.ReminderItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class ReminderListViewModel @Inject constructor(
     private val reminderInteractor: ReminderInteractor,
     private val createReminderFragmentPreferences: SharedPreferences,

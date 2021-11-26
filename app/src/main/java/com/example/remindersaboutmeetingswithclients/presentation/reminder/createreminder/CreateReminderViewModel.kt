@@ -5,19 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.ReminderInteractor
 import com.example.domain.models.ReminderItem
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CALENDAR_TIME
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.DATE_SWITCHER
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.DATE_TEXT
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.TIME_SWITCHER
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.TIME_TEXT
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.TITLE_TEXT
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.CALENDAR_TIME
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.DATE_SWITCHER
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.DATE_TEXT
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.TIME_SWITCHER
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.TIME_TEXT
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.TITLE_TEXT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-@HiltViewModel
 class CreateReminderViewModel @Inject constructor(
     private val reminderInteractor: ReminderInteractor,
     private val createReminderFragmentPreferences: SharedPreferences,

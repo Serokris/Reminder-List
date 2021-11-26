@@ -4,11 +4,9 @@ import androidx.lifecycle.ViewModel
 import com.example.domain.common.Result
 import com.example.domain.interactors.RandomUserServiceInteractor
 import com.example.domain.models.Client
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-@HiltViewModel
 class ClientListViewModel @Inject constructor(
     private val randomUserServiceInteractor: RandomUserServiceInteractor
 ) : ViewModel() {

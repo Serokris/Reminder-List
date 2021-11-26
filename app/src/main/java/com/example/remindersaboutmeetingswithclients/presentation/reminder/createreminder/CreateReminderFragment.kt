@@ -14,25 +14,24 @@ import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentCreateReminderBinding
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
+import com.example.remindersaboutmeetingswithclients.utils.appComponent
 import com.example.remindersaboutmeetingswithclients.utils.notification.ClientDataForNotification
 import com.example.remindersaboutmeetingswithclients.utils.notification.ClientMeetingNotification
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
 
-@AndroidEntryPoint
 class CreateReminderFragment :
     BaseBindingFragment<FragmentCreateReminderBinding>(FragmentCreateReminderBinding::inflate) {
 
-    private val viewModel: CreateReminderViewModel by viewModels()
-    private lateinit var calendar: Calendar
+    private val viewModel: CreateReminderViewModel by viewModels {
+        appComponent.viewModelFactory()
+    }
+    private val calendar by lazy(LazyThreadSafetyMode.NONE) { Calendar.getInstance() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        calendar = Calendar.getInstance()
 
         initViews()
     }
@@ -113,10 +112,15 @@ class CreateReminderFragment :
                         if (selectedTimeText.text.isNotEmpty()) {
                             ReminderAlarmManager.createAlarm(requireActivity(), calendar)
 
-                            val clientFullName = "${client.fullName.firstName} ${client.fullName.lastName}"
-                            val clientData = ClientDataForNotification(clientFullName, calendar.timeInMillis)
+                            val clientFullName =
+                                "${client.fullName.firstName} ${client.fullName.lastName}"
+                            val clientData =
+                                ClientDataForNotification(clientFullName, calendar.timeInMillis)
 
-                            ClientMeetingNotification.addClientDataToList(clientData, requireContext())
+                            ClientMeetingNotification.addClientDataToList(
+                                clientData,
+                                requireContext()
+                            )
 
                             reminder.requestCode = ReminderAlarmManager.getCurrentRequestCode
 

@@ -1,9 +1,11 @@
 # __Reminder List__
-This application was made as a test task to consolidate knowledge about Retrofit library. 
-The essence of the application: there is a list of client appointment reminders,
-in which you can add client appointment reminders. Clients are randomly generated using [this API service](https://randomuser.me/). 
-You can set the name of the reminder, the date of the appointment, and a specific appointment time. 
-One hour before the appointment time with a specific client you receive a notification in the form of an appointment reminder.
+
+This application was made as a test task to consolidate knowledge about Retrofit library. The
+essence of the application: there is a list of client appointment reminders, in which you can add
+client appointment reminders. Clients are randomly generated
+using [this API service](https://randomuser.me/). You can set the name of the reminder, the date of
+the appointment, and a specific appointment time. One hour before the appointment time with a
+specific client you receive a notification in the form of an appointment reminder.
 
 ## __Screenshots__
 
@@ -27,4 +29,4 @@ One hour before the appointment time with a specific client you receive a notifi
 * [Gson](https://github.com/google/gson)
 * [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines)
 * [View Binding](https://developer.android.com/topic/libraries/view-binding)
-* [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+* [Dagger 2](https://dagger.dev/dev-guide/)

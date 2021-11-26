@@ -8,36 +8,31 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.data.mappers.toClientResponse
 import com.example.domain.common.Result
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentClientListBinding
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
+import com.example.remindersaboutmeetingswithclients.utils.appComponent
 import com.example.remindersaboutmeetingswithclients.utils.hideView
 import com.example.remindersaboutmeetingswithclients.utils.showView
 import com.livermor.delegateadapter.delegate.CompositeDelegateAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@AndroidEntryPoint
 class ClientListFragment :
     BaseBindingFragment<FragmentClientListBinding>(FragmentClientListBinding::inflate),
     ClientListAdapter.ClientClickListener {
 
-    private val viewModel: ClientListViewModel by viewModels()
-    private var navController: NavController? = null
+    private val viewModel: ClientListViewModel by viewModels {
+        appComponent.viewModelFactory()
+    }
+    private val navController by lazy(LazyThreadSafetyMode.NONE) { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initNavController()
         initViews()
-    }
-
-    private fun initNavController() {
-        navController = findNavController()
     }
 
     private fun initViews() {
@@ -57,7 +52,8 @@ class ClientListFragment :
                         }
                         is Result.Error -> {
                             loadingClientProgressBar.hideView()
-                            Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }.launchIn(viewModel.viewModelScope)
@@ -68,7 +64,7 @@ class ClientListFragment :
     }
 
     override fun onClientClick(client: com.example.domain.models.Client) {
-        navController?.navigate(
+        navController.navigate(
             ClientListFragmentDirections.actionClientListFragmentToCreateReminderFragment(client.toClientResponse())
         )
     }

@@ -3,10 +3,7 @@ package com.example.remindersaboutmeetingswithclients.presentation.reminder.remi
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,16 +14,17 @@ import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentReminderListBinding
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.ReminderAlarmManager
+import com.example.remindersaboutmeetingswithclients.utils.appComponent
 import com.example.remindersaboutmeetingswithclients.utils.observeOnce
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class ReminderListFragment :
     BaseBindingFragment<FragmentReminderListBinding>(FragmentReminderListBinding::inflate) {
 
-    private val viewModel: ReminderListViewModel by viewModels()
+    private val viewModel: ReminderListViewModel by viewModels {
+        appComponent.viewModelFactory()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

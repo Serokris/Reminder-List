@@ -15,7 +15,7 @@ fun ReminderItem.toReminderItemEntity(): ReminderItemEntity {
         title = this.title,
         date = this.date,
         time = this.time,
-        ClientResponse(
+        client = ClientResponse(
             client.email,
             FullNameResponse(client.fullName.firstName, client.fullName.lastName),
             PictureResponse(client.picture.large)
@@ -30,7 +30,7 @@ fun ReminderItemEntity.toReminderItem(): ReminderItem {
         title = this.title,
         date = this.date,
         time = this.time,
-        Client(
+        client = Client(
             client.email,
             FullName(client.fullName.firstName, client.fullName.lastName),
             Picture(client.picture.large)

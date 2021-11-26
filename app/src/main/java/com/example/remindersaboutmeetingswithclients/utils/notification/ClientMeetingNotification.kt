@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.remindersaboutmeetingswithclients.R
 import com.example.remindersaboutmeetingswithclients.presentation.MainActivity
-import com.example.remindersaboutmeetingswithclients.utils.constants.CreateReminderFragmentConstants.CLIENTS_FULL_NAME_LIST
+import com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder.CreateReminderFragmentConstants.CLIENTS_FULL_NAME_LIST
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception

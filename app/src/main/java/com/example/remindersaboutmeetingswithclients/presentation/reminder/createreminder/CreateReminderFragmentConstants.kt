@@ -1,4 +1,4 @@
-package com.example.remindersaboutmeetingswithclients.utils.constants
+package com.example.remindersaboutmeetingswithclients.presentation.reminder.createreminder
 
 object CreateReminderFragmentConstants {
     const val CREATE_REMINDER_FRAGMENT_PREF_NAME = "create_reminder_fragment_shared_preferences"
