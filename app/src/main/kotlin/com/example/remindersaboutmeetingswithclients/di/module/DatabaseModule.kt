@@ -2,7 +2,7 @@ package com.example.remindersaboutmeetingswithclients.di.module
 
 import android.content.Context
 import androidx.room.Room
-import com.example.remindersaboutmeetingswithclients.utils.constants.DatabaseConstants.REMINDER_LIST_DB_NAME
+import com.example.data.source.local.ReminderDatabase.Companion.REMINDER_LIST_DB_NAME
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

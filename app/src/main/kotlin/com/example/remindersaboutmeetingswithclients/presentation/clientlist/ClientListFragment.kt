@@ -16,7 +16,6 @@ import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindi
 import com.example.remindersaboutmeetingswithclients.utils.appComponent
 import com.example.remindersaboutmeetingswithclients.utils.hideView
 import com.example.remindersaboutmeetingswithclients.utils.showView
-import com.livermor.delegateadapter.delegate.CompositeDelegateAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -36,16 +35,16 @@ class ClientListFragment :
     }
 
     private fun initViews() {
-        val adapter = CompositeDelegateAdapter(ClientListAdapter(this))
-        binding.clientRecyclerView.adapter = adapter
-
         binding.apply {
             if (thereIsInternetConnection()) {
                 viewModel.getClientList(15).onEach { result ->
                     when (result) {
                         is Result.Success -> {
                             loadingClientProgressBar.hideView()
-                            adapter.swapData(result.data!!)
+                            val adapter = ClientListAdapter(
+                                this@ClientListFragment, result.data!!
+                            )
+                            clientRecyclerView.adapter = adapter
                         }
                         is Result.Loading -> {
                             loadingClientProgressBar.showView()
