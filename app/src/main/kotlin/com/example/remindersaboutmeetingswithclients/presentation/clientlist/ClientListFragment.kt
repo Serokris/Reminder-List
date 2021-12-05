@@ -1,23 +1,16 @@
 package com.example.remindersaboutmeetingswithclients.presentation.clientlist
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.mappers.toClientResponse
-import com.example.domain.common.Result
 import com.example.remindersaboutmeetingswithclients.databinding.FragmentClientListBinding
 import com.example.remindersaboutmeetingswithclients.presentation.base.BaseBindingFragment
 import com.example.remindersaboutmeetingswithclients.utils.appComponent
 import com.example.remindersaboutmeetingswithclients.utils.hideView
 import com.example.remindersaboutmeetingswithclients.utils.showView
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class ClientListFragment :
     BaseBindingFragment<FragmentClientListBinding>(FragmentClientListBinding::inflate),
@@ -31,34 +24,31 @@ class ClientListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews()
+        subscribeUi()
     }
 
-    private fun initViews() {
+    private fun subscribeUi() {
         binding.apply {
-            if (thereIsInternetConnection()) {
-                viewModel.getClientList(15).onEach { result ->
-                    when (result) {
-                        is Result.Success -> {
-                            loadingClientProgressBar.hideView()
-                            val adapter = ClientListAdapter(
-                                this@ClientListFragment, result.data!!
-                            )
-                            clientRecyclerView.adapter = adapter
-                        }
-                        is Result.Loading -> {
-                            loadingClientProgressBar.showView()
-                        }
-                        is Result.Error -> {
-                            loadingClientProgressBar.hideView()
-                            Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                }.launchIn(viewModel.viewModelScope)
-            } else {
-                noInternetImage.showView()
-            }
+            viewModel.dataLoading.observe(viewLifecycleOwner, { isLoading ->
+                if (isLoading) loadingProgressBar.showView()
+                else loadingProgressBar.hideView()
+            })
+
+            viewModel.clientsList.observe(viewLifecycleOwner, { clientList ->
+                if (clientList.isNotEmpty()) {
+                    val adapter = ClientListAdapter(this@ClientListFragment, clientList)
+                    clientRecyclerView.setHasFixedSize(true)
+                    clientRecyclerView.adapter = adapter
+                }
+            })
+
+            viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
+                if (errorMessage.isNotEmpty()) {
+                    Toast.makeText(
+                        root.context, errorMessage, Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
         }
     }
 
@@ -66,17 +56,5 @@ class ClientListFragment :
         navController.navigate(
             ClientListFragmentDirections.actionClientListFragmentToCreateReminderFragment(client.toClientResponse())
         )
-    }
-
-    private fun thereIsInternetConnection(): Boolean {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val netWork = connectivityManager.activeNetwork
-            netWork != null
-        } else {
-            val netWorkInfo = connectivityManager.activeNetworkInfo
-            netWorkInfo != null && netWorkInfo.isConnected
-        }
     }
 }

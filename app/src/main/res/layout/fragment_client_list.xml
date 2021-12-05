@@ -11,7 +11,7 @@
         tools:context=".presentation.clientlist.ClientListFragment">
 
         <ProgressBar
-            android:id="@+id/loadingClientProgressBar"
+            android:id="@+id/loadingProgressBar"
             style="?android:progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

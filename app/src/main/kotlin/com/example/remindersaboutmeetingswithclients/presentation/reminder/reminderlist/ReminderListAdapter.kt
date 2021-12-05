@@ -26,7 +26,10 @@ class ReminderListAdapter :
         holder.bind(currentItem)
     }
 
-    class ViewHolder(private val binding: ReminderListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(
+        private val binding: ReminderListItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         @SuppressLint("SetTextI18n")
         fun bind(reminderItem: ReminderItem) {
             binding.apply {
@@ -36,13 +39,15 @@ class ReminderListAdapter :
                     "${reminderItem.client.fullName.firstName} ${reminderItem.client.fullName.lastName}"
                 clientEmail.text = reminderItem.client.email
                 Glide.with(root).load(reminderItem.client.picture.large).into(clientImage)
-                executePendingBindings()
             }
         }
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<ReminderItem>() {
-        override fun areItemsTheSame(oldItem: ReminderItem, newItem: ReminderItem) = oldItem.id == newItem.id
-        override fun areContentsTheSame(oldItem: ReminderItem, newItem: ReminderItem) = oldItem == newItem
+        override fun areItemsTheSame(oldItem: ReminderItem, newItem: ReminderItem) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: ReminderItem, newItem: ReminderItem) =
+            oldItem == newItem
     }
 }

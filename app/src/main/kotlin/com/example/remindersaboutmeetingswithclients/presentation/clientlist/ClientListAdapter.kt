@@ -33,17 +33,24 @@ class ClientListAdapter(
         private val binding: ClientListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private var _client: Client? = null
+
+        init {
+            binding.root.setOnClickListener {
+                _client?.let { client ->
+                    listener.onClientClick(client)
+                }
+            }
+        }
+
         @SuppressLint("SetTextI18n")
         fun bind(client: Client) {
+            _client = client
             binding.apply {
                 clientFullName.text =
                     "${client.fullName.firstName} ${client.fullName.lastName}"
                 clientEmail.text = client.email
                 Glide.with(root).load(client.picture.large).into(clientImage)
-
-                root.setOnClickListener {
-                    listener.onClientClick(client)
-                }
             }
         }
     }

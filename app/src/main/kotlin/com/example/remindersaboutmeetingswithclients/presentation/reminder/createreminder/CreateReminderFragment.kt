@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.data.mappers.toClient
 import com.example.domain.models.ReminderItem
@@ -29,6 +30,7 @@ class CreateReminderFragment :
         appComponent.viewModelFactory()
     }
     private val calendar by lazy(LazyThreadSafetyMode.NONE) { Calendar.getInstance() }
+    private val saveArgs: CreateReminderFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +41,7 @@ class CreateReminderFragment :
     @SuppressLint("SetTextI18n")
     private fun initViews() {
         val navController = findNavController()
-        val client = CreateReminderFragmentArgs.fromBundle(requireArguments()).client
+        val client = saveArgs.client
 
         getViewsState()
 
