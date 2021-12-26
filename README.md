@@ -7,6 +7,11 @@ using [this API service](https://randomuser.me/). You can set the name of the re
 the appointment, and a specific appointment time. One hour before the appointment time with a
 specific client you receive a notification in the form of an appointment reminder.
 
+## __Architecture__
+
+* Architecture - Clean Architecture
+* Presentation layer pattern - MVVM
+
 ## __Screenshots__
 
 ![](screenshots/2021-09-14%2016.17.55.jpg)
