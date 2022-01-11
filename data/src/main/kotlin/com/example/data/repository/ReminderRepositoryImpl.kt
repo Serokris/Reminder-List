@@ -21,7 +21,7 @@ class ReminderRepositoryImpl @Inject constructor(
         reminderDao.delete(reminderItem.toReminderItemEntity())
     }
 
-    override suspend fun deleteAllReminder() {
+    override suspend fun deleteAllReminders() {
         reminderDao.deleteAllReminders()
     }
 

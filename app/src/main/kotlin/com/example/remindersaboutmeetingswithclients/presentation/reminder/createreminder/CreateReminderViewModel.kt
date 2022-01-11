@@ -23,7 +23,7 @@ class CreateReminderViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun insert(reminderItem: ReminderItem) {
-        viewModelScope.launch(Dispatchers.IO) { reminderInteractor.insert(reminderItem) }
+        viewModelScope.launch(Dispatchers.IO) { reminderInteractor.add(reminderItem) }
     }
 
     fun saveViewsState(viewFieldValues: ViewFieldValues) {

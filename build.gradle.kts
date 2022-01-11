@@ -6,6 +6,8 @@ buildscript {
         set("retrofitVersion", "2.9.0")
         set("daggerVersion", "2.39.1")
         set("gsonVersion", "2.8.6")
+        set("jUnitVersion", "4.13.2")
+        set("androidTestExtensionVersion", "1.1.3")
     }
 
     val kotlinVersion: String by extra
@@ -17,7 +19,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.3")
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion")
     }

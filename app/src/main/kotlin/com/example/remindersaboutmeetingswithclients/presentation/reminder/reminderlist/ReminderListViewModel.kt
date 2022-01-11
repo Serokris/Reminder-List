@@ -16,7 +16,7 @@ class ReminderListViewModel @Inject constructor(
     private val createReminderFragmentPreferences: SharedPreferences,
 ) : ViewModel() {
     fun insert(reminderItem: ReminderItem) {
-        viewModelScope.launch(Dispatchers.IO) { reminderInteractor.insert(reminderItem) }
+        viewModelScope.launch(Dispatchers.IO) { reminderInteractor.add(reminderItem) }
     }
 
     fun delete(reminderItem: ReminderItem) {
@@ -24,7 +24,7 @@ class ReminderListViewModel @Inject constructor(
     }
 
     fun deleteAllReminders() {
-        viewModelScope.launch(Dispatchers.IO) { reminderInteractor.deleteAllReminder() }
+        viewModelScope.launch(Dispatchers.IO) { reminderInteractor.deleteAllReminders() }
     }
 
     fun getAllReminders(): LiveData<List<ReminderItem>> {

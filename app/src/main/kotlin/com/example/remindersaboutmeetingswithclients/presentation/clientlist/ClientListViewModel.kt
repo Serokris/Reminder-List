@@ -25,12 +25,11 @@ class ClientListViewModel @Inject constructor(
     val errorMessage: LiveData<String> get() = _errorMessage
 
     init {
-        val clientsAmount = 15
-        getClientList(clientsAmount)
+        getClientList()
     }
 
-    private fun getClientList(count: Int) {
-        randomUserServiceInteractor.getRandomClients(count).onEach { result ->
+    private fun getClientList(clientsAmount: Int = 15) {
+        randomUserServiceInteractor.getRandomClients(clientsAmount).onEach { result ->
             when (result) {
                 is Result.Success -> {
                     _dataLoading.postValue(false)

@@ -3,6 +3,7 @@ package com.example.remindersaboutmeetingswithclients.presentation.clientlist
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.example.domain.models.Client
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.data.mappers.toClientResponse
@@ -52,7 +53,7 @@ class ClientListFragment :
         }
     }
 
-    override fun onClientClick(client: com.example.domain.models.Client) {
+    override fun onClientClick(client: Client) {
         navController.navigate(
             ClientListFragmentDirections.actionClientListFragmentToCreateReminderFragment(client.toClientResponse())
         )

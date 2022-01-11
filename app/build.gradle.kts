@@ -43,6 +43,8 @@ val navigationVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
 val retrofitVersion: String by rootProject.extra
 val daggerVersion: String by rootProject.extra
+val jUnitVersion: String by rootProject.extra
+val androidTestExtensionVersion: String by rootProject.extra
 val glideVersion = "4.12.0"
 val lifecycleVersion = "2.4.0"
 
@@ -56,8 +58,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     // Testing
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    testImplementation("junit:junit:$jUnitVersion")
+    androidTestImplementation("androidx.test.ext:junit:$androidTestExtensionVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     // Navigation Component

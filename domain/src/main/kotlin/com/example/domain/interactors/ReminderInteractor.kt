@@ -9,11 +9,11 @@ class ReminderInteractor @Inject constructor(
     private val reminderRepository: ReminderRepository
 ) {
 
-    suspend fun insert(reminderItem: ReminderItem) = reminderRepository.insert(reminderItem)
+    suspend fun add(reminderItem: ReminderItem) = reminderRepository.insert(reminderItem)
 
     suspend fun delete(reminderItem: ReminderItem) = reminderRepository.delete(reminderItem)
 
-    suspend fun deleteAllReminder() = reminderRepository.deleteAllReminder()
+    suspend fun deleteAllReminders() = reminderRepository.deleteAllReminders()
 
     fun getAllReminders(): Flow<List<ReminderItem>> = reminderRepository.getAllReminders()
 }
